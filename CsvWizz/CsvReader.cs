@@ -39,22 +39,63 @@ namespace CsvWizz
 				{
 					var name = propNames[i];
 					var value = values[i];
-					objProps.Add($"\"{name}\": \"{value}\"");
+
+					string insertValue;
+
+					// Need to determine the datatype
+					if (int.TryParse(value, out int intResult))
+					{
+						// No quotes on numbers
+						insertValue = $"\"{name}\":{intResult}";
+					}
+					else if (double.TryParse(value, out double doubleResult))
+					{
+						// No quotes on numbers
+						insertValue = $"\"{name}\":{doubleResult}";
+					}
+					else if (decimal.TryParse(value, out decimal decimalResult))
+					{
+						// No quotes on numbers
+						insertValue = $"\"{name}\":{decimalResult}";
+					}
+					else if (DateTime.TryParse(value, out DateTime dateResult))
+					{
+						// JSON Dates do not match .Net dates, so correct them
+						var h = dateResult.Hour < 10 ? $"0{dateResult.Hour}" : dateResult.Hour.ToString();
+						var m = dateResult.Minute < 10 ? $"0{dateResult.Minute}" : dateResult.Minute.ToString();
+						var s = dateResult.Second < 10 ? $"0{dateResult.Second}" : dateResult.Second.ToString();
+
+						var dateVal = $"{dateResult.Year}-{dateResult.Month}-{dateResult.Day}T{h}:{m}:{s}";
+						insertValue = $"\"{name}\":\"{dateVal}\"";
+					}
+					else if (Boolean.TryParse(value, out bool boolResult))
+					{
+						// No quotes and lower case for bool
+						insertValue = $"\"{name}\":{boolResult.ToString().ToLower()}";
+					}
+					else
+					{
+						// Assume string or string-compatible datatype
+						insertValue = $"\"{name}\":\"{value}\"";
+
+					}
+
+					objProps.Add(insertValue);
 
 				}
 
 				var valsSb = new StringBuilder();
-				valsSb.AppendLine("{");
-				valsSb.AppendLine(string.Join(",\r\n", objProps));
-				valsSb.AppendLine("}");
+				valsSb.Append("{");
+				valsSb.Append(string.Join(",", objProps));
+				valsSb.Append("}");
 				objStrings.Add(valsSb.ToString());
 			}
 
 			// Join all objects with comma and wrap in square brackets to create JSON array
 			var sb = new StringBuilder();
-			sb.AppendLine("[");
-			sb.Append(string.Join(",\r\n", objStrings));
-			sb.AppendLine("]");
+			sb.Append("[");
+			sb.Append(string.Join(",", objStrings));
+			sb.Append("]");
 
 			return sb.ToString();
 		}

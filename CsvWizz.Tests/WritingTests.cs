@@ -3,28 +3,13 @@ using CsvWizz;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using CsvWizz.Tests.Models;
 
 namespace CsvWizz.Tests
 {
 	[TestClass]
 	public class WritingTests
 	{
-		public class TestClass
-		{
-			public int IntegerProperty { get; set; }
-			public string StringProperty { get; set; }
-			public bool BooleanProperty { get; set; }
-			public DateTime DateTimeProperty { get; set; }
-			public TestEnum EnumProperty { get; set; }
-		}
-
-		public enum TestEnum
-		{
-			Value1,
-			Value2,
-			Value3
-		}
-
 		[TestMethod]
 		public void CanWriteData()
 		{
