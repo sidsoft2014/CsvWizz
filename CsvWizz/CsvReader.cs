@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace CsvWizz
 {
-	public class CsvReader<T>
+	public class CsvReader
 	{
 		/// <summary>
 		/// Reads a .csv file into JSON format
@@ -59,7 +59,7 @@ namespace CsvWizz
 			return sb.ToString();
 		}
 
-		public static T[] ReadToObject(string path, string delimiter = ",")
+		public static T[] ReadToObject<T>(string path, string delimiter = ",")
 		{
 			var json = ReadToJSON(path, delimiter);
 			var deserialised = JsonConvert.DeserializeObject<T[]>(json);
