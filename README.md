@@ -19,7 +19,7 @@ var data = new MyClass[] {
 };
 
 // Try to write data to .csv file
-if(CsvWriter.Write(data, "path/to/csv")){
+if(CsvWriter.Write(data, "path\\to\\csv")){
   // Read data from .csv into JSON
   var json = CsvReader.ReadToJSON("path\\to\\csv");
   // Read data from .csv and map to class
