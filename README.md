@@ -1,9 +1,11 @@
 # CsvWizz
 Simple CSV writing and reading tool
 
-###Example usage:
+### Example usage:
 
 ```C#
+using CsvWizz;
+
 // Create simple dataset
 var data = new MyClass[] {
   new MyClass{
